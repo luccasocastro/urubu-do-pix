@@ -2,10 +2,14 @@ package com.luxkapotter.urubupix.models;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,16 +22,20 @@ public class Investment {
     private Double value;
     private LocalDate depositDate;
     private LocalDate dueDate;
-    private Long userId;
-    public Investment() {
-    }
-    public Investment(Long id, Double value, LocalDate depositDate, LocalDate dueDate, Long userId) {
-        this.id = id;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    public Investment(Double value, LocalDate depositDate, LocalDate dueDate, User user) {
         this.value = value;
         this.depositDate = depositDate;
         this.dueDate = dueDate;
-        this.userId = userId;
+        this.user = user;
     }
+
+    public Investment() {
+    }
+    
     public Long getId() {
         return id;
     }
@@ -52,11 +60,11 @@ public class Investment {
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
     @Override
     public int hashCode() {
@@ -84,7 +92,7 @@ public class Investment {
     @Override
     public String toString() {
         return "Investment [id=" + id + ", value=" + value + ", depositDate=" + depositDate + ", dueDate=" + dueDate
-                + ", userId=" + userId + "]";
+                + ", userId=" + user + "]";
     }
     
 }
