@@ -11,28 +11,28 @@ import org.springframework.web.bind.annotation.RestController;
 import com.luxkapotter.urubupix.models.User;
 import com.luxkapotter.urubupix.models.DTOs.UserRequest;
 import com.luxkapotter.urubupix.models.DTOs.UserResponse;
-import com.luxkapotter.urubupix.repositories.UserRepository;
+import com.luxkapotter.urubupix.services.UserService;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
-    private UserRepository userRepository;
+    private final UserService userService;
+    private final UserDTOMapper userDTOMapper;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService, UserDTOMapper userDTOMapper) {
+        this.userService = userService;
+        this.userDTOMapper = userDTOMapper;
     }
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest obj){
-        User user = new User(obj.name(), obj.email(), obj.password());
-        userRepository.save(user);
-        return ResponseEntity.ok(new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getInvestments()));
+        User user = userService.create(obj);
+        return ResponseEntity.ok(userDTOMapper.toResponse(user));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findById(@PathVariable Long id){
-        User user = userRepository.findById(id).get();
-        return ResponseEntity.ok(new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getInvestments()));
+        return ResponseEntity.ok(userDTOMapper.toResponse(userService.findById(id)));
     }
     
 }
