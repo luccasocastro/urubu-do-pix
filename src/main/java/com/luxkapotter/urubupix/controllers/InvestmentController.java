@@ -1,6 +1,7 @@
 package com.luxkapotter.urubupix.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/investments")
+@CrossOrigin(origins="*")
 public class InvestmentController {
     private final InvestmentService investmentService;
     private final UserRepository userRepository;

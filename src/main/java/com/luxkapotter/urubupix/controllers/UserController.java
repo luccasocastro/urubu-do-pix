@@ -1,6 +1,7 @@
 package com.luxkapotter.urubupix.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import com.luxkapotter.urubupix.services.UserService;
 
 @RestController
 @RequestMapping(value = "/users")
+@CrossOrigin(origins="*")
 public class UserController {
     private final UserService userService;
     private final UserDTOMapper userDTOMapper;
